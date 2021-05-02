@@ -1,0 +1,583 @@
+# Javascript 정리2
+
+
+
+## 1. 식별자
+
+- 변수를 구분할 수 있는 변수명
+- 문자, 달러($), 밑줄(_)로 시작한다.
+- 대소문자 구분, 클래스명을 제외하고는 모두 소문자로 시작
+- for, if, case 등의 예약어 사용 불가능
+
+- 식별자 작성 스타일
+  - 카멜 케이스(camelCase, lower-camel-case)
+    - 변수, 객체, 함수에 사용
+  - 파스칼 케이스(PascalCase, upper-camel-case)
+    - 클래스, 생성자에 사용
+  - 대문자 스네이크 케이스(SNAKE_CASE)
+    - 상수(constants)에 사용
+
+
+
+## 2. 변수 선언
+
+- let
+  - 재할당 할 수 있는 변수 선언 시 사용
+  - 변수 재선언 불가능
+  - 블록 스코프
+- const
+  - 재할당 할 수 없는 변수 선언 시 사용
+  - 변수 재선언 불가능
+  - 블록 스코프
+
+- var
+  - 재할당, 재선언 모두 가능
+  - 함수 스코프
+  - 호이스팅(변수를 선언 이전에 참조하는 문제)되는 특성으로 인해 예기치 못한 문제 발생 가능
+
+**함수 스코프와 블록 스코프**
+
+[블로그 참조](https://poiemaweb.com/es6-block-scope)
+
+- 함수 레벨 스코프: 함수 내에서 선언된 변수는 함수 내에서만 유효하며 함수 외부에서는 참조할 수 없다. for, while 등에서 사용되는 변수는 전역 변수임.
+
+- 블록 레벨 스코프: 모든 코드 블록(함수, if문, for문, while문, try/catch문 등) 내에서 선언된 변수는 코드 블록 내에서만 유효하며 코드 블록 외부에서는 참조할 수 없다.
+
+블록이 뭔지 궁금했었는데, 어떤 특정한 기능을 하는 명령어의 내부를 말하는 것이었다. 파이썬으로 생각해보면 for문 내에서 쓰이는 변수가 블록 스코프를 따르는 것 같다. 파이썬의 while문은 해당되지 않을 수도? (밖에서 변수를 정해주고 while 문에서 변수를 조작하기도 하니까)
+
+```js
+let foo // 선언
+console.log(foo) // undefined
+
+foo = 11 // 할당
+console.log(foo) // 11
+
+let bar = 0 // 선언 + 할당
+console.log(bar) // 0
+```
+
+
+
+## 3. 타입과 연산자
+
+### 3.1 데이터 타입 종류
+
+- 원시 타입(Primitive type)
+
+  - Number
+
+    - 정수, 실수 구분 x, 부동소수점 형식을 따름
+    - 계산 불가능한 경우 NaN 반환('Angel'/1004 => NaN)
+
+  - String
+
+    - 텍스트 데이터
+
+    - 작은따옴표 or 큰따옴표 모두 가능
+
+    - 16비트 유니코드 문자의 집합
+
+    - 변수명으로 대체가 가능(템플릿 리터럴)
+
+      ```js
+      const firstName = 'Brendan'
+      const lastName = 'Eich'
+      const fullName = `${firstName} ${lastName}`
+      ```
+
+      backtick을 사용함에 주의!
+
+  - Boolean
+
+    - 논리적 참 또는 거짓을 나타내는 타입
+
+    - true / false로 표현
+
+    - 조건문 또는 반복문에서 유용하게 사용
+
+    - 타입별 판별 내용
+
+      | 데이터 타입 | 거짓       | 참               |
+      | ----------- | ---------- | ---------------- |
+      | Undefined   | 항상 거짓  | X                |
+      | Null        | 항상 거짓  | X                |
+      | Number      | 0, -0, NaN | 나머지 모든 경우 |
+      | String      | 빈 문자열  | 나머지 모든 경우 |
+      | Object      | X          | 항상 참          |
+
+  - undefined
+    - 변수의 값이 없음을 나타내는 데이터 타입
+    - 변수 선언만 하고 할당을 하지 않으면 undefined가 할당됨
+    - 원시타입이므로 typeof undefined를 해보면 undefined가 결과로 나온다.
+  - null
+    - **변수의 값이 없음을 의도적으로 표현**할 때 사용
+    - 원시타입이지만 null을 typeof 로 검사해보면 null타입이 아니라 **object 타입**으로 나온다.
+  - Symbol
+  - 객체가 아닌 기본 타입들을 말하며, 변수에 해당 타입의 값이 담긴다. 다른 변수에 복사할 때 실제 값이 복사된다.
+
+- 참조 타입(Reference type)
+
+  - Objects
+  - Array
+  - Function
+  - ...
+  - 객체 타입의 자료형들을 말한다. 변수에 해당 객체의 **참조 값**이 담기며, 다른 변수에 복사할 때 참조 값이 복사된다.
+
+
+
+### 3.2 연산자
+
+- +=
+- *=
+- /=
+- -=
+- x++
+- x--
+
+
+
+- <, >, <= >=
+
+  - 피연산자들(숫자, 문자, Boolean 등)을 비교하고 비교의 결과값을 불리언으로 반환하는 연산자
+
+    ```js
+    const numOne = 1
+    const numTwo = 100
+    console.log(numOne < numTwo) // true
+    ```
+
+- ==
+
+  - 두 피연산자가 같은 값으로 평가되는지 비교 후 불리언 값을 반환
+  - **암묵적 타입 변환**을 통해 타입을 일치시킨 후 같은 값인지 비교
+  - 두 피연산자가 모두 객체일 경우 메모리의 같은 객체를 참조하는지 판별
+  - 웬만하면 ===을 쓰자!
+
+- ===
+
+  - 엄격한 비교, 타입 변환 없이 타입과 값 모두 같은지 확인
+  - 두 피연산자가 모두 객체일 경우 메모리의 같은 객체를 참조하는지 판별
+
+
+
+- &&
+  - and 연산
+- ||
+  - or 연산
+- !
+  - not 연산
+- 단축 평가 지원
+  - false && true => false
+  - true || false => true
+
+
+
+- 삼항 연산자
+
+  - 세 개의 피연산자를 사용하여 조건에 따라 값을 반환하는 연산자
+
+  - 가장 왼쪽의 조건식이 참이면 콜론 앞의 값을 사용, 그렇지 않으면 콜론 뒤의 값을 사용
+
+    ```js
+    console.log(true ? 1 : 2) // 1
+    console.log(false ? 1 : 2) // 2
+    
+    const result = Math.PI > 4 ? 'Yes' : 'No'
+    console.log(result) // No
+    ```
+
+    
+
+## 4. 조건문과 반복문
+
+### 4.1 조건문
+
+1. **if 문**
+
+   ```js
+   const username = 'admin'
+   if (username === 'admin') {
+     console.log('관리자님 환영합니다.')
+   } else if (username === 'manager') {
+     console.log('매니저님 환영합니다.')
+   } else {
+     console.log(`${username}님 환영합니다.`)
+   }
+   ```
+
+   
+
+2. **switch 문**
+
+   ```js
+   const numOne = 10
+   const numTwo = 100
+   const operator = '+'
+   
+   switch (operator) {
+     case '+': {
+       console.log(numOne + numTwo)
+       break
+     }
+     case '-': {
+       console.log(numOne - numTwo)
+       break
+     }
+     case '*': {
+       console.log(numOne * numTwo)
+       break
+     }
+     case '/': {
+       console.log(numOne / numTwo)
+       break
+     }
+     default: {
+       console.log('유효하지 않은 연산자입니다.')
+     }
+   }
+   ```
+
+   표현식의 결과값과 case문의 오른쪽 값을 비교함
+
+   break 및 default 문은 선택적으로 사용 가능
+
+   break 문이 없는 경우 break문을 만나거나 default 문을 실행할 때 까지 다음 조건문 실행
+
+   블록 스코프 생성
+
+
+
+### 4.2 반복문
+
+- while
+
+  - 조건문이 참인 동안 반복 시행
+
+  - 블록 스코프 생성
+
+    ```js
+    //주어진 변수 evenNumber를 2씩 증가시키고, 해당 값을 출력합니다.
+    //evenNumber가 6이 되면 반복문을 종료합니다.
+    
+    let evenNumber = 0
+    
+    while (evenNumber < 6) {
+      console.log(evenNumber) // 0, 2, 4
+      evenNumber += 2
+    }
+    ```
+
+    
+
+- for
+
+  - 세미콜론으로 구분되는 세 부분으로 구성
+  - initialization - 최초 반복문 진입시 1회 실행되는 부분
+  - condition - 매 반복 시행 전 평가되는 부분
+  - expression - 매 반복 시행 이후 평가되는 부분
+  - 블록 스코프 생성
+
+  ```js
+  // oddNumber라는 이름의 변수를 선언 및 1로 초기화합니다.
+  // 매 시행마다 oddNumber를 2씩 증가시키고, 해당 값을 출력합니다.
+  // oddNumber가 5가 되면 반복문을 종료합니다.
+  
+  for (let oddNumber = 1; oddNumber < 5; oddNumber += 2) {
+    console.log(oddNumber) // 1, 3
+  }
+  ```
+
+  
+
+- for in
+
+  - 객체(object)의 속성들을 순회할 때 사용
+  - 배열 순회도 가능하지만 순서대로는 아닐 수 있음. 권장x
+  - 실행할 코드는 중괄호 안에 작성
+  - 블록 스코프 생성
+
+  ```js
+  const capitals = {
+      Korea: '서울',
+      France: '파리',
+      USA: '워싱턴 D.C.'
+  }
+  for (let capital in capitals) {
+      console.log(capital) // Korea, France, USA
+  }
+  ```
+
+  
+
+  ```js
+  //주어진 객체를 순회하면서 예시와 같이 출력합니다.
+  //예시) title: '벤자민 버튼의 시간은 거꾸로 간다'
+  
+  const bestMovie = {
+    title: '벤자민 버튼의 시간은 거꾸로 간다',
+    releaseYear: 2008,
+    actors: ['브래드 피트', '케이트 블란쳇'],
+    genres: ['romance', 'fantasy'],
+  }
+  
+  for (let key in bestMovie) {
+    console.log(`${key}: ${bestMovie[key]}`)
+    // console.log(bestMovie[key])
+  }
+  ```
+
+  
+
+- for of
+
+  - 반복 가능한 객체(?)를 순회하며 값을 꺼낼 때 사용 <= 객체라고는 했지만 주로 배열을 순회할 때 사용하는 듯. 위의 for in에서 사용한 객체를 for of 문으로 돌려고 하면 에러가 날 수 있다.
+  - 실행할 코드는 중괄호 안에 작성
+  - 블록 스코프 생성
+
+  ```js
+  const fruits = ['딸기', '바나나', '메론']
+  
+  for (let fruit of fruits) {
+      console.log(fruit) // 딸기, 바나나, 메론
+  }
+  ```
+
+
+
+
+
+## 5. 함수
+
+
+
+### 5.1 함수 선언식(statement, declaration)
+
+```js
+function add (num1, num2) {
+    return num1 + num2
+}
+
+add(2, 7)
+```
+
+함수의 이름을 선언
+
+일반적인 프로그래밍 언어에서의 함수 설정과 같은 방법이다.
+
+- 호이스팅이 있다. 브라우저가 자바스크립트를 해석할 때 함수 선언식을 맨 위로 끌어올려 시작하기 때문에 함수를 설정하기 이전의 코드에서도 함수를 사용할 수 있게 된다.
+
+```js
+// 함수 생성 전
+logMessage()
+sumNumbers()
+
+// 함수 생성
+// 1. 함수 선언식
+function logMessage() {
+    return 'worked'
+}
+
+// 2. 함수 표현식
+const sumNumbers = function () {
+    return 10+20
+}
+```
+
+
+
+### 5.2 함수 표현식(expression)
+
+```js
+const sub = function (num1, num2) {
+    return num1 - num2
+}
+
+sub(7, 2)
+```
+
+
+
+```js
+/*
+	[함수 표현식 연습]
+	
+	문자열로 구성된 배열을 특정 문자를 기준으로 하나의 문자열로 합치는 함수 `join`을 작성하세요.
+	- 첫번째 인자 `array`는 문자열로 구성된 배열입니다.
+	- 두번째 인자 `separator`는 문자열입니다.
+	- 함수는 표현식으로 작성합니다.
+	- 예시) join(['010', '1234', '5678'], '-')  // '010-1234-5678'
+*/
+
+const myJoin = function (array, separator) {
+	let result = ''
+
+	for (let idx = 0; idx < array.length; idx++) {
+		// let word = array[idx]
+		const word = array[idx]
+		result += word
+		if (idx < array.length - 1) {
+			result += separator
+		}
+	}
+
+	return result
+}
+
+console.log(myJoin(['010', '1234', '5678'], '-'))
+```
+
+
+
+기본 인자 선언 가능
+
+```js
+const greeting = function (name = 'noName') {
+    console.log(`hi ${name}`)
+}
+
+greeting() // hi noName
+```
+
+
+
+- 함수 표현식을 사용하면 호이스팅시 에러가 발생한다. 왜냐하면, 함수를 변수에 할당함으로써 함수가 변수로 평가되어 변수의 scope 규칙을 따르기 때문이다.
+
+
+
+### 5.3 Arrow Function
+
+- function 키워드 생략 가능
+- 함수의 매개변수가 단 하나 뿐이라면, '()'도 생략 가능
+- 함수 바디가 표현식 하나라면 '{}' 과 return도 생략 가능
+
+```js
+const arrow = function (name) {
+    return `hello! ${name}`
+}
+
+// 1. function 키워드 삭제, 중괄호를 화살표로 가리킴
+const arrow = (name) => { return `hello! ${name}`}
+
+// 2. () 생략 (함수 매개변수가 하나인 경우!)
+const arrow = name => { return `hello! ${name}` }
+
+// 3. {} & return 생략 (바디가 표현식 1개인 경우)
+const arrow = name => `hello! ${name}`
+```
+
+
+
+## 6. 배열
+
+
+
+### 6.1 배열의 정의
+
+```js
+const numbers = [1, 2, 3, 4, 5]
+
+console.log(numbers[0]) // 1
+console.log(numbers[-1]) // undefined
+console.log(numbers.length) // 5
+```
+
+- 키와 속성들을 담고 있는 참조 타입의 객체(object)
+- 순서를 보장하는 특징이 있음
+- 대괄호로 생성, 0을 포함한 양의 정수 인덱스로 접근 가능
+- 배열의 길이는 array.length로 접근 가능
+- 배열의 마지막 원소는 array.length-1로 접근
+
+
+
+### 6.2 배열 관련 메서드
+
+1. reverse
+
+   ```js
+   const numbers = [1, 2, 3, 4, 5]
+   numbers.reverse()
+   console.log(numbers) // [5, 4, 3, 2, 1]
+   ```
+
+2. push & pop
+
+   ```js
+   const numbers = [1, 2, 3, 4, 5]
+   
+   numbers.push(100)
+   console.log(numbers) // [1, 2, 3, 4, 5, 100]
+   
+   numbers.pop()
+   console.log(numbers) // [1, 2, 3, 4, 5]
+   ```
+
+3. unshift & shift
+
+   ```js
+   const numbers = [1, 2, 3, 4, 5]
+   
+   numbers.unshift(100)
+   console.log(numbers) // [100, 1, 2, 3, 4, 5]
+   
+   numbers.shift()
+   console.log(numbers) // [1, 2, 3, 4, 5]
+   ```
+
+   unshift는 배열의 가장 앞에 요소를 추가하고, shift는 첫 번째 요소를 제거한다.
+
+4. includes
+
+   ```js
+   const numbers = [1, 2, 3, 4, 5]
+   
+   console.log(numbers.includes(1)) // true
+   
+   console.log(numbers.includes(100)) // false
+   ```
+
+   배열에 특정 값이 존재하는지 판별 후 참 또는 거짓 반환
+
+5. indexOf
+
+   ```js
+   const numbers = [1, 2, 3, 4, 5]
+   let result
+   
+   result = numbers.indexOf(3) // 2
+   console.log(result)
+   
+   result = numbers.indexOf(100) // -1
+   console.log(result)
+   ```
+
+   배열에 특정 값이 존재하는지 확인 후 가장 첫 번째로 찾은 요소의 인덱스 반환
+
+   만약 해당 값이 없으면 -1 반환
+
+6. join
+
+   ```js
+   const numbers = [1, 2, 3, 4, 5]
+   let result
+   
+   // 1. 기본 구분자(separator) == 쉼표
+   result = numbers.join() // 1, 2, 3, 4, 5
+   console.log(result)
+   
+   // 2. 구분자 지정
+   result = numbers.join('') // 12345
+   console.log(result)
+   
+   result = numbers.join(' ') // 1 2 3 4 5
+   console.log(result)
+   
+   result = numbers.join('-') // 1-2-3-4-5
+   console.log(result)
+   ```
+
+   
+
+### 6.3 배열 관련 메서드 심화
+
+배열을 순회하며 특정 로직을 수행하는 메서드들이 있다.
+

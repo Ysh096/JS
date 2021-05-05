@@ -581,3 +581,242 @@ console.log(numbers.length) // 5
 
 배열을 순회하며 특정 로직을 수행하는 메서드들이 있다.
 
+| 메서드  | 설명                                                         | 비고         |
+| ------- | ------------------------------------------------------------ | ------------ |
+| forEach | 배열의 각 요소에 대해 콜백 함수 한 번씩 실행                 | 반환 값 없음 |
+| map     | 콜백 함수의 반환 값을 요소로 하는 새로운 배열 반환           |              |
+| filter  | 콜백 함수의 반환 값이 참인 요소들만 모아서 새로운 배열을 반환 |              |
+| reduece | 콜백 함수의 반환 값들을 하나의 값에 누적 후 반환             |              |
+| find    | 콜백 함수의 반환 값이 참이면 해당 요소를 반환                |              |
+| some    | 배열의 요소 중 하나라도 판별 함수를 통과하면 참을 반환       |              |
+| every   | 배열의 모든 요소가 판별 함수를 통과하면 참을 반환            |              |
+
+
+
+1. forEach(element, index, array)
+
+   - 최대 세 개의 인자를 가질 수 있으며, 각각 element, index, array이다. 각 요소, 인덱스, 배열에 대해 원하는 동작을 설정!
+
+   ```js
+   const array = ['America', 'Japan,', 'China', 'Singapore']
+   
+   array.forEach((region, index, array) => {
+       console.log(`${array}의 ${index}번째 요소: ${region}`)
+   })
+   America, Japan, China, Singapore 의 0번째 요소: America
+   America, Japan, China, Singapore 의 1번째 요소: Japan
+   America, Japan, China, Singapore 의 2번째 요소: China
+   America, Japan, China, Singapore 의 3번째 요소: Singapore
+   ```
+
+2. map(element, index, array)
+
+   ```js
+   const numbers = [1, 2, 3, 4, 5]
+   
+   const doubleNums = numbers.map((num) => {
+       return num * 2
+   })
+   
+   console.log(doubleNums) // [2, 4, 6, 8, 10]
+   ```
+
+3. filter(element, index, array)
+
+   - 함수의 반환 값이 참인 요소들만 모아서 새로운 배열을 반환
+
+   ```js
+   const numbers = [1, 2, 3]
+   
+   const oddNums = numbers.filter((num) => { // oddNums에 새로운 배열을 저장한다.
+       return num % 2 // 홀수인 numbers의 원소만 저장한다
+   })
+   
+   console.log(oddNums) // [1, 3, 5]
+   ```
+
+4. reduce(acc, element, index, initialValue)
+
+   - acc의 초기값(initialValue) 지정 가능, 지정하지 않으면 배열의 첫 번째 값을 사용
+   - acc는 계산할때마다 바뀐다
+
+   ```js
+   array.reduce((acc, element, index, array) => {
+       // do something
+   }, initialValue)
+   ```
+
+   ```js
+   const numbers = [1, 2, 3]
+   
+   const result = numbers.reduce((acc, num) => { // result에 결과 저장
+       return acc + num // 원하는 동작
+   }, 0)
+   
+   console.log(result) // 6
+   ```
+
+5. find(element, index, array)
+
+   ```js
+   const avengers = [
+       { name: 'Tony Stark', age: 45},
+       { name: 'Steve Rogers', age: 32},
+       { name: 'Thar', age: 40},   
+   ]
+   const result = avengers.find((avenger) => {
+       return avenger.name === 'Tony Stark'
+   })
+   console.log(result) // {name: "Tony Stark", age:45}
+   ```
+
+6. some(element, index, array)
+
+   - 요소 중 하나라도 주어진 판별 함수를 통과하면 참을 반환
+
+   ```js
+   const numbers = [1, 3, 5, 7, 9]
+   
+   const hasEvenNumber = numbers.sum((num) => {
+       return num % 2 === 0
+   })
+   console.log(hasEvenNumber) // false
+   ```
+
+7. every
+
+   - 모든 요소가 주어진 판별 함수를 통과하면 참을 반환
+
+   ```js
+   const numbers = [2, 4, 6, 8, 10]
+   
+   const isEveryNumberEven = numbers.every((num) => {
+       return num % 2 === 0
+   })
+   console.log(isEveryNumberEven) // true
+   ```
+
+
+
+
+
+## 7. 객체(Objects) 중요!
+
+### 7.1 객체의 정의
+
+- 객체는 property의 집합이며, 중괄호 내부에 key: value 쌍으로 표현한다.
+- **key는 문자열 타입만 가능**하다.
+- key에 띄어쓰기 등이 있으면 따옴표로 묶어서 표현한다.
+- value는 모든 타입이 가능
+- 객체 요소 접근은 **점 또는 대괄호**로 가능하다.
+  - **key 이름에 띄어쓰기 등의 구분자가 있으면 대괄호 접근만 가능**하다!
+
+```js
+const me = {
+    name: '홍길동',
+    'phone number': '01012345678',
+    samsungProducts: {
+        buds: 'Galaxy Buds Pro',
+        galaxy: 'Galaxy s21',
+    },
+}
+
+console.log(me.name) // 홍길동
+consol.log(me['phone number']) // 01012345678
+console.log(me.samsungProducts) // {buds: "Galaxy Buds Pro", galaxy: ...}
+console.log(me.samsungProducts.buds) // Galaxy Buds Pro
+```
+
+
+
+### 7.2 객체 관련 ES6 문법
+
+1) 속성명 축약
+
+객체 정의시에 key와 value의 이름이 같으면 축약 가능(value를 따로 쓰지 않아도 됨)
+
+```js
+const username = 'hailey'
+const contact = '010-1234-5678'
+
+var info = {
+  username,
+  contact,
+}
+console.log(info) // {username: "hailey", contact: "010-1234-5678"}
+```
+
+
+
+2) 메서드명 축약
+
+객체의 value로 메서드 선언 시 function 키워드 생략 가능
+
+```js
+var obj = {
+    greeting: function () {
+        console.log('Hi!')
+    }
+}
+obj.greeting() // Hi!
+
+// 축약 시
+const newObj = {
+    greeting() {
+        console.log('Hi!')
+    }
+}
+newObj.greeting() // Hi!
+```
+
+
+
+3) 계산된 속성 이름
+
+객체를 정의할 때 key의 이름을 표현식을 사용하여 동적으로 생성 가능
+
+```js
+const key = 'regions'
+const value = ['광주', '대전', '구미', '서울']
+
+const countries = {
+    [key]: value,
+}
+console.log(countries) // {regions: Array(4)}
+console.log(countries.regions) // ["광주", "대전", "구미", "서울"]
+```
+
+
+
+4) 구조 분해 할당
+
+배열 또는 객체를 분해하여 속성을 변수에 쉽게 할당할 수 있는 문법
+
+```js
+const userInformation = {
+    name: 'sh',
+    userId: 'skk7541',
+    phoneNumber: '010-6681-4267'
+}
+
+const name = userInformation.name
+const userId = userInformation.userId
+const phoneNumber = userInformation.phoneNumber
+
+
+// 축약
+const userInformation = {
+    name: 'sh',
+    userId: 'skk7541',
+    phoneNumber: '010-6681-4267'
+}
+
+const {name} = userInformation
+const {userId} = userInformation
+const {phoneNumber} = userInformation
+const {email} = userInformation
+
+// 여러 개
+const {name, userId} = userInformation
+```
+

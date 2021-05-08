@@ -25,25 +25,17 @@
   - 재할당 할 수 있는 변수 선언 시 사용
   - 변수 재선언 불가능
   - 블록 스코프
+  - 선언과 할당을 따로 할 수 있음
 - const
   - 재할당 할 수 없는 변수 선언 시 사용
   - 변수 재선언 불가능
   - 블록 스코프
-
+  - 선언과 할당을 동시에 해야만 함(재할당이 불가능한 특성)
+  
 - var
   - 재할당, 재선언 모두 가능
   - 함수 스코프
   - 호이스팅(변수를 선언 이전에 참조하는 문제)되는 특성으로 인해 예기치 못한 문제 발생 가능
-
-**함수 스코프와 블록 스코프**
-
-[블로그 참조](https://poiemaweb.com/es6-block-scope)
-
-- 함수 레벨 스코프: 함수 내에서 선언된 변수는 함수 내에서만 유효하며 함수 외부에서는 참조할 수 없다. for, while 등에서 사용되는 변수는 전역 변수임.
-
-- 블록 레벨 스코프: 모든 코드 블록(함수, if문, for문, while문, try/catch문 등) 내에서 선언된 변수는 코드 블록 내에서만 유효하며 코드 블록 외부에서는 참조할 수 없다.
-
-블록이 뭔지 궁금했었는데, 어떤 특정한 기능을 하는 명령어의 내부를 말하는 것이었다. 파이썬으로 생각해보면 for문 내에서 쓰이는 변수가 블록 스코프를 따르는 것 같다. 파이썬의 while문은 해당되지 않을 수도? (밖에서 변수를 정해주고 while 문에서 변수를 조작하기도 하니까)
 
 ```js
 let foo // 선언
@@ -56,7 +48,103 @@ let bar = 0 // 선언 + 할당
 console.log(bar) // 0
 ```
 
+---
 
+**호이스팅이란?**
+
+코드가 위로 끌어올려진 것 처럼 작동하는 것을 말한다. let, const, var 모두 호이스팅이 일어나는데, 이때 호이스팅은 변수를 선언하는 부분에 일어난다. 즉, 할당은 호이스팅되지 않는다.
+
+```js
+console.log(name) // undefined, 할당되지 않았기 때문
+var name = "Mike"
+---------------------------------------------------
+    
+console.log(name)
+const name = "Mike" // ReferenceError
+
+---------------------------------------------------
+      
+console.log(name)
+let name = "Mike" // ReferenceError
+
+```
+
+위 예를 보면, var는 undefined가 뜨지만 나머지는 ReferenceError가 뜬다. 셋 다 선언이 호이스팅 된다면 왜 undefined가 아니라 ReferenceError가 나타나는 것일까?
+
+그 이유는 let과 const는 TDZ(Temporal Dead Zone)의 영향을 받기 때문이다. TDZ는 할당을 하기 전에는 사용할 수 없도록 막아주는 역할을 한다.
+
+```js
+# 문제가 없는 코드
+let age = 30;
+
+function showAge(){
+    console.log(age) // 30
+}
+showAge()
+```
+
+```js
+# 문제가 발생하는 코드
+let age = 30;
+
+function showAge(){
+    console.log(age) // ReferenceError
+    
+    let age = 20
+}
+showAge() 
+```
+
+위 예를 보면, 첫 번째 코드는 함수 바깥의 age를 출력하지만, 아래 코드는 ReferenceError를 출력한다. 그 이유는, 두 번째 코드의 함수 내부에서 age를 선언 및 할당하고 있기 때문에 함수 내부에서 age 선언 및 할당의 윗부분은 TDZ가 되기 때문이다. **함수 내부와 외부의 구분에 주의!**
+
+---
+
+**함수 스코프와 블록 스코프**
+
+[블로그 참조](https://poiemaweb.com/es6-block-scope)
+
+- 함수 레벨 스코프(var): 함수 내에서 선언된 변수는 함수 내에서만 유효하며 함수 외부에서는 참조할 수 없다. for, while 등에서 사용되는 변수는 전역 변수임.
+
+- 블록 레벨 스코프(let, const): 모든 코드 블록(함수, if문, for문, while문, try/catch문 등) 내에서 선언된 변수는 코드 블록 내에서만 유효하며 코드 블록 외부에서는 참조할 수 없다.
+
+블록이 뭔지 궁금했었는데, 어떤 특정한 기능을 하는 명령어의 내부를 말하는 것이었다. 파이썬으로 생각해보면 for문 내에서 쓰이는 변수가 블록 스코프를 따르는 것 같다. 파이썬의 while문은 해당되지 않을 수도? (밖에서 변수를 정해주고 while 문에서 변수를 조작하기도 하니까)
+
+```js
+function add() {
+    //Block-level Scope
+}
+
+if(){
+   //Block-level Scope
+}
+
+for(let i=0;i<10;i++){
+    // Block-level Scope
+}
+```
+
+```js
+# var는 함수 스코프이므로 블록 외부에서 사용할 수 있음
+# let, const는 이렇게 사용할 수 없음!
+const age = 30;
+if(age>19){
+    var txt = '성인';
+}
+console.log(txt); // '성인'
+
+# var가 함수 내에서 선언된 경우 외부에서 사용할 수 없음
+function add(num1, num2){
+    var result = num1 + num2
+}
+add(2, 3)
+console.log(result)
+# Uncaught ReferenceError: result is not defined
+
+==> 결국 함수 내부에서 var, let, const를 선언하면 바깥에서 사용할 수 없고,
+    if, for 문 등의 블록에서 선언된 let, const는 바깥에서 사용할 수 없다.
+```
+
+함수를 벗어날 수 있는 변수는 없고, var는 블록은 벗어날 수 있다. let과 const는 아무것도 벗어날 수 없다.
 
 ## 3. 타입과 연산자
 

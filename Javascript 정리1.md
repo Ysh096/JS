@@ -1,6 +1,6 @@
 # Javascript 정리
 
-
+[TOC]
 
 ## 브라우저에서 할 수 있는 일?
 
@@ -144,8 +144,6 @@ NodeList가 뭘까? **반환 타입**에는 세 가지 종류가 있는데, 다�
 
 - Document.createElement()
 
->
->
 >```js
 >const browserHeader = document.createElement('h2')
 >const ul = document.createElement('ul')
@@ -156,12 +154,12 @@ NodeList가 뭘까? **반환 타입**에는 세 가지 종류가 있는데, 다�
 >
 >태그명을 이용해 HTML 요소를 만들 수 있다.
 
+
+
 - ParentNode.append(), appendChild()
 
-> 
->
 > ```js
-> const body = document.querySelector('body')
+>const body = document.querySelector('body')
 > // 하나의 노드만 특정 부모의 자식 노드 리스트 중 마지막 자식으로 삽입
 > body.appendChild(browserHeader)
 > body.appendChild(ul)
@@ -169,15 +167,15 @@ NodeList가 뭘까? **반환 타입**에는 세 가지 종류가 있는데, 다�
 > // 여러 개의 Node 객체, DOMString을 추가할 수 있음
 > ul.append(li1, li2, li3) 
 > ```
->
+> 
 > body의 마지막 자식으로 browserHeader와 ul 태그를 넣는 코드. append를 이용하면 여러 개를 한 번에 넣을 수 있음.
+
+
 
 - ChildNode.remove(), removeChild
 
-> 
->
 > ```js
-> // removeChild
+>// removeChild
 > // ul 아래에 있는 특정 태그 요소 삭제
 > ul.removeChild(li1) 
 > ul.removeChild(li2)
@@ -191,12 +189,12 @@ NodeList가 뭘까? **반환 타입**에는 세 가지 종류가 있는데, 다�
 > el.remove()
 > ```
 
+
+
 - Node.innerText, innerHTML
 
-> 
->
 > ```js
-> // innerText
+>// innerText
 > browserHeader.innerText = 'Browsers'
 > li1.innerText = 'IE'
 > li2.innerText = '<strong>FireFox</strong>'
@@ -204,21 +202,23 @@ NodeList가 뭘까? **반환 타입**에는 세 가지 종류가 있는데, 다�
 > // innerHTML
 > li3.innerHTML = '<strong>Chrome</strong>'
 > ```
->
+> 
 > innerText를 이용해서 어떤 객체를 가져오려고 한다고 해보자. 이 때 만약 다음과 같은 내용을 가져오게 된다면,
 >
 > ```
-> <div>A</div>
+><div>A</div>
 > <div>B</div>
 > ```
->
+> 
 > innerText는 태그 안의 A와 B만 가지고 오게 된다. raw text가 최종적으로 렌더링 된 모습을 가지고 오는 것이다. 반면에 innerHTML을 이용하여 요소를 가지고 온다면, 위의 내용 그대로를 가지고 오게 된다. HTML 마크업을 반환하게 되는 것이다.
 >
 > 이제 가지고 오는 상황이 아니라 처음 제시했던 것 처럼 새로운 내용을 태그에 입력하려고 한다고 해보자. 그러면 innerText의 경우에는 입력하는 내용이 무엇이든 그대로 텍스트 형태로 넣어주게 되어, 위의 예에서 li2는 `<strong>FireFox</strong>`이라는 내용을 그대로 가지게 된다. 반면에 innerHTML은 `Chrome`이라는, 태그의 기능이 적용된 결과를 li3에 넣어주게 된다.
 >
 > 따라서 생각해보면, innerText는 요소를 가져올 때도 텍스트만, 넣어줄 때도 텍스트의 형태로만 넣어주게 되고, innerHTML은 요소를 가져올 때도 HTML 태그 통째로 가져오고 넣어줄 때에는 HTML 태그를 텍스트 형태가 아니라 그 자체로 넣어주게 됨을 알 수 있다.
 >
-> 다소 헷갈리지만 알 것도 같다.
+> innerText는 우리 눈에 보이는 그대로를 가져오고, 입력한다.
+>
+> innerHTML은 우리 눈에 보이지 않는 태그를 가져오고, 태그를 적용하여 입력한다.
 
 **참고: innerHTML은 XSS(Cross-site scripting) 공격에 약하다.**
 
@@ -226,14 +226,14 @@ NodeList가 뭘까? **반환 타입**에는 세 가지 종류가 있는데, 다�
 
 - Element.setAttribut(name, value)
 
->
->
 >```js
 >// id를 king으로 설정하기
 >li3.setAttribute('id', 'king')
 >```
 >
 >li3 요소의 id를 king으로 업데이트 혹은 추가하는 코드
+
+
 
 - Element.getAttribute('속성이름')
 
@@ -281,7 +281,7 @@ window.confirm()
 ## Event
 
 - 네트워크 활동 혹은 사용자와의 상호작용 같은 사건의 발생을 알리기 위한 객체
-- 이벤트는 사용자 행동(클릭, 키보드 누르기 등)로 직접 발생하거나, 메서드 호출에 의해 만들어 질 수 있다.
+- 이벤트는 사용자 행동(클릭, 키보드 누르기 등)로 직접 발생하거나, **메서드 호출에 의해 만들어 질 수 있다.**
 
 웹페이지에서 마우스를 갖다대면 토글되는 메뉴바 등은 이러한 이벤트를 통해 만들어 진 것이다.
 
@@ -319,8 +319,8 @@ window.confirm()
 >  const colorInput = document.querySelector('#change-color-input')
 >
 >  const changeColor = function (event) {
->    const h2Tag = document.querySelector('h2')
->    h2Tag.style.color = event.target.value
+>    	const h2Tag = document.querySelector('h2')
+>    	h2Tag.style.color = event.target.value
 >  }
 >
 >  colorInput.addEventListener('input', changeColor)

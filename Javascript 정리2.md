@@ -1,6 +1,6 @@
 # Javascript 정리2
 
-
+[TOC]
 
 ## 1. 식별자
 
@@ -526,8 +526,6 @@ const greeting = function (name = 'noName') {
 greeting() // hi noName
 ```
 
-
-
 - 함수 표현식을 사용하면 호이스팅시 에러가 발생한다. 왜냐하면, 함수를 변수에 할당함으로써 함수가 변수로 평가되어 변수의 scope 규칙을 따르기 때문이다.
 
 
@@ -904,7 +902,7 @@ const {userId} = userInformation
 const {phoneNumber} = userInformation
 const {email} = userInformation
 
-// 여러 개
+// 여러 개(유용할듯?)
 const {name, userId} = userInformation
 ```
 

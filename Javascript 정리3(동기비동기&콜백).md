@@ -1,6 +1,6 @@
 # JavaScript 정리3
 
-
+[TOC]
 
 ## 1. AJAX
 
@@ -396,7 +396,7 @@ urlpattern = [
 
 
 
-### 5.5 Primise way (Promise 방식 허용)
+### 5.5 Promise way (Promise 방식 허용)
 
 - 비동기 작업의 최종 완료 또는 실패를 나타내는 객체
 - 성공했으면 데이터가, 없으면 에러가 들어 있음
@@ -491,12 +491,12 @@ myPromise
    - 각각의 콜백은 주어진 순서대로 하나 하나 실행하게 됨
    - Chaining은 Promise의 가장 뛰어난 장점
 
-
+=> web API로 넘어간 이후 함수들의 실행 순서가 뒤죽박죽(event loop에 의해 대기 시간이나 응답 등이 완료된 순서로 call stack에 할당)이 될 수 있는데, 이를 해결할 수 있다는 뜻인듯?
 
 **Axios**
 
 - **AJAX 요청을 하기 위한 간편한 라이브러리**
-
+  - Asynchronous Javascript And XML 
 - Promise based HTTP client for the browser and Node.js
 - 브라우저를 위한 Promise 기반의 클라이언트
 - 원래는 XHR 이라는 브라우저 내장 객체를 활용해 AJAX 요청을 처리하는데, 이보다 편리한 AJAX 요청이 가능하도록 도움을 줌
